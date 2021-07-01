@@ -55,7 +55,7 @@ export default {
             }
           }
 
-          if (this.montantEnvoye > 760 && this.montantEnvoye < 800) {
+          if (this.montantEnvoye > 765 && this.montantEnvoye < 800) {
             value -= 5;
           }
 
