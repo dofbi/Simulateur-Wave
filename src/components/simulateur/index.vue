@@ -16,7 +16,7 @@
       <div id="montant-Recu">{{ montantRecu }}</div>
     </div>
     <div>
-      <div>Frais = {{ frais }}</div>
+      <div>Frais = {{ frais }} FCFA</div>
       <div class="pourcentage">{{ pourcentage }} %</div>
     </div>
   </div>
@@ -36,67 +36,45 @@ export default {
   },
   watch: {
     montantEnvoye: function (montant) {
-      let value = Math.floor(montant - montant / 100);
+      let value = 0;
+      if (this.montantEnvoye < 800) {
+        value = Math.round(montant - montant / 100);
+      } else {
+        value = Math.floor(montant - montant / 100);
+      }
+
       if (montant > 5) {
-        if (montant < 505) {
-          while (value % 5 !== 0) {
-            value--;
-          }
-          this.montantRecu = value;
-        } else if (montant >= 505 && montant < 600) {
-          while (value % 5 !== 0) {
-            value++;
-          }
-          this.montantRecu = value;
-        } else if (montant > 600 && montant < 799) {
-          value -= 5;
-          while (value % 5 !== 0) {
-            value++;
-          }
-          this.montantRecu = value;
-        } else if (montant >= 799 && montant < 800) {
-          value -= 10;
-          while (value % 5 !== 0) {
-            value++;
-          }
-          this.montantRecu = value;
-        } else {
-          if (value % 10 < 8) {
-            while (value % 5 !== 0) {
-              value--;
-            }
-          } else {
+        if (montant > 500 && montant < 800) {
+          if (value % 10 > 8) {
             while (value % 5 !== 0) {
               value++;
             }
+          } else {
+            while (value % 5 !== 0) {
+              value--;
+            }
           }
-          if (this.montantEnvoye > 800 && this.montantEnvoye < 1000) {
+
+          if (this.montantEnvoye > 760 && this.montantEnvoye < 800) {
             value -= 5;
-          } else if (this.montantEnvoye > 2000 && this.montantEnvoye < 5000) {
-            value -= 5;
-          } else if (
-            this.montantEnvoye > 50000 &&
-            this.montantEnvoye < 100000
-          ) {
-            value += 5;
-          } else if (
-            this.montantEnvoye >= 100000 &&
-            this.montantEnvoye < 500000
-          ) {
-            value += 10;
-          } else if (
-            this.montantEnvoye >= 500000 &&
-            this.montantEnvoye < 1000000
-          ) {
-            value += 95;
-          } else if (
-            this.montantEnvoye >= 1000000 &&
-            this.montantEnvoye < 20000000
-          ) {
-            value += 100;
-          } else if (this.montantEnvoye >= 20000000) {
-            value += 1980;
           }
+
+          this.montantRecu = value;
+        } else {
+          while (value % 5 !== 0) {
+            value--;
+          }
+
+          if (this.montantEnvoye > 20000) {
+            let frais = Math.floor((value * 0.01) / 100);
+
+            while (frais % 5 !== 0) {
+              frais++;
+            }
+
+            value += frais;
+          }
+
           this.montantRecu = value;
         }
         this.frais = this.montantEnvoye - this.montantRecu;
