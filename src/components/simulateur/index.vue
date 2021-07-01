@@ -37,19 +37,18 @@ export default {
   watch: {
     montantEnvoye: function (montant) {
       let value = Math.floor(montant - montant / 100);
-
       if (montant > 5) {
         if (montant < 505) {
           while (value % 5 !== 0) {
             value--;
           }
           this.montantRecu = value;
-        } else if (montant === 505) {
+        } else if (montant >= 505 && montant < 600) {
           while (value % 5 !== 0) {
             value++;
           }
           this.montantRecu = value;
-        } else if (montant > 505 && montant < 799) {
+        } else if (montant > 600 && montant < 799) {
           value -= 5;
           while (value % 5 !== 0) {
             value++;
@@ -62,12 +61,10 @@ export default {
           }
           this.montantRecu = value;
         } else {
-          console.log(value);
           if (value % 10 < 8) {
             while (value % 5 !== 0) {
               value--;
             }
-            console.log(value);
           } else {
             while (value % 5 !== 0) {
               value++;
@@ -75,23 +72,38 @@ export default {
           }
           if (this.montantEnvoye > 800 && this.montantEnvoye < 1000) {
             value -= 5;
+          } else if (this.montantEnvoye > 2000 && this.montantEnvoye < 5000) {
+            value -= 5;
           } else if (
-            this.montantEnvoye > 10000 &&
+            this.montantEnvoye > 50000 &&
             this.montantEnvoye < 100000
           ) {
             value += 5;
           } else if (
             this.montantEnvoye >= 100000 &&
-            this.montantEnvoye < 1000000
+            this.montantEnvoye < 500000
           ) {
             value += 10;
-          } else if (this.montantEnvoye >= 1000000) {
+          } else if (
+            this.montantEnvoye >= 500000 &&
+            this.montantEnvoye < 1000000
+          ) {
+            value += 95;
+          } else if (
+            this.montantEnvoye >= 1000000 &&
+            this.montantEnvoye < 20000000
+          ) {
             value += 100;
+          } else if (this.montantEnvoye >= 20000000) {
+            value += 1980;
           }
           this.montantRecu = value;
         }
         this.frais = this.montantEnvoye - this.montantRecu;
         this.pourcentage = (this.frais * 100) / this.montantEnvoye;
+        if (this.frais < 5) {
+          this.montantRecu -= 5;
+        }
       }
     },
     pourcentage: function (num) {

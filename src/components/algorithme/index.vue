@@ -14,6 +14,7 @@
     <h3>Testeurs</h3>
     <ul>
       <li>Soumpa Claude Ndecky</li>
+      <li>Malik Dieng</li>
     </ul>
   </div>
 </template>
